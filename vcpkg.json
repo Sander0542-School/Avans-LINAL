@@ -1,0 +1,9 @@
+{
+  "name": "linal-opdrachten",
+  "version-string": "latest",
+  "dependencies": [
+    "boost-format",
+    "sdl2",
+    "sdl2-ttf"
+  ]
+}
