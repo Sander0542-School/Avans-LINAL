@@ -7,7 +7,7 @@
 namespace linal::models::common
 {
     template<class T>
-    class IModel : public FriendOperators<T>, public Stringable
+    class Model : public FriendOperators<T>, public Stringable
     {
 
     };

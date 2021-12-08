@@ -2,7 +2,7 @@
 #define LINAL_ASSESSMENT_VECTOR_HPP
 
 #include "Point.hpp"
-#include "Common/IModel.hpp"
+#include "Common/Model.hpp"
 
 #include <boost/format.hpp>
 
@@ -12,7 +12,7 @@
 
 namespace linal::models
 {
-    class Vector : public common::IModel<Vector>
+    class Vector : public common::Model<Vector>
     {
         public:
             double x;

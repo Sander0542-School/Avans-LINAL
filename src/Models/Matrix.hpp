@@ -2,7 +2,7 @@
 #define LINAL_ASSESSMENT_MATRIX_HPP
 
 #include "Vector.hpp"
-#include "Common/IModel.hpp"
+#include "Common/Model.hpp"
 #include "Utils/MathUtil.hpp"
 
 #include <boost/format.hpp>
@@ -50,7 +50,7 @@ namespace linal::models
             }
     };
 
-    class Matrix : public common::IModel<Matrix>
+    class Matrix : public common::Model<Matrix>
     {
         private:
             double _defaultValue;

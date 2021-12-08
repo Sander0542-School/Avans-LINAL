@@ -1,13 +1,13 @@
 #ifndef LINAL_ASSESSMENT_POINT_HPP
 #define LINAL_ASSESSMENT_POINT_HPP
 
-#include "Common/IModel.hpp"
+#include "Common/Model.hpp"
 
 #include <boost/format.hpp>
 
 namespace linal::models
 {
-    class Point : public common::IModel<Point>
+    class Point : public common::Model<Point>
     {
         public:
             double x;

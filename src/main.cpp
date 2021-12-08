@@ -2,6 +2,8 @@
 #include "Engine/Window.hpp"
 #include "Models/Models.hpp"
 
+#include "Entities/Entities.hpp"
+
 using namespace linal::engine;
 using namespace linal::models;
 
