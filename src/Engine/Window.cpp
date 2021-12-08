@@ -6,11 +6,12 @@
 using namespace linal::engine;
 using namespace linal::models;
 
-Window::Window(const std::string& title, int xpos, int ypos, int width, int height) : _window(nullptr, &SDL_DestroyWindow),
-                                                                                      _renderer(nullptr, &SDL_DestroyRenderer),
-                                                                                      _font(nullptr, &TTF_CloseFont),
-                                                                                      _width(width),
-                                                                                      _height(height)
+Window::Window(const std::string& title, int xpos, int ypos, int width, int height, enums::WindowView windowView) : _window(nullptr, &SDL_DestroyWindow),
+                                                                                                                    _renderer(nullptr, &SDL_DestroyRenderer),
+                                                                                                                    _font(nullptr, &TTF_CloseFont),
+                                                                                                                    _width(width),
+                                                                                                                    _height(height),
+                                                                                                                    _windowView(windowView)
 {
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
@@ -25,9 +26,18 @@ void Window::RenderLine(const Point& point, const Vector& vector, const Color& c
 {
     auto newPoint = CalculatePoint(offset, point);
     SetDrawColor(color);
-    SDL_RenderDrawLine(_renderer.get(), newPoint.x, newPoint.y, newPoint.x + vector.x, newPoint.y + -vector.y); // Front
-//    SDL_RenderDrawLine(_renderer.get(), newPoint.x, newPoint.z, newPoint.x + vector.x, newPoint.z + -vector.z); // Top
-//    SDL_RenderDrawLine(_renderer.get(), newPoint.y, newPoint.z, newPoint.y + vector.y, newPoint.z + -vector.z); // Side
+    switch (_windowView)
+    {
+        case enums::WindowView::Front:
+            SDL_RenderDrawLine(_renderer.get(), newPoint.x, newPoint.y, newPoint.x + vector.x, newPoint.y + -vector.y);
+            break;
+        case enums::WindowView::Top:
+            SDL_RenderDrawLine(_renderer.get(), newPoint.x, newPoint.z, newPoint.x + vector.x, newPoint.z + -vector.z);
+            break;
+        case enums::WindowView::Side:
+            SDL_RenderDrawLine(_renderer.get(), newPoint.y, newPoint.z, newPoint.y + vector.y, newPoint.z + -vector.z);
+            break;
+    }
 }
 
 void Window::RenderText(const std::string& text, const Point& point, const Color& color, const Point& offset)

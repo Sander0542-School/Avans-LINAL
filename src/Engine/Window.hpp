@@ -5,6 +5,7 @@
 #include <SDL_ttf.h>
 
 #include "Color.hpp"
+#include "Enums/WindowView.hpp"
 #include "Models/Models.hpp"
 
 #include <memory>
@@ -18,12 +19,13 @@ namespace linal::engine
             std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> _window;
             std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> _renderer;
             std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> _font;
+            enums::WindowView _windowView;
 
             int _width;
             int _height;
 
         public:
-            Window(const std::string& title, int xpos, int ypos, int width, int height);
+            Window(const std::string& title, int xpos, int ypos, int width, int height, enums::WindowView windowView = enums::WindowView::Front);
 
             void RenderLine(const models::Point& point, const models::Vector& vector, const Color& color, const models::Point& offset = {});
 
