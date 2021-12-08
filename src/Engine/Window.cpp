@@ -25,9 +25,9 @@ void Window::RenderLine(const Point& point, const Vector& vector, const Color& c
 {
     auto newPoint = CalculatePoint(offset, point);
     SetDrawColor(color);
-    SDL_RenderDrawLine(_renderer.get(), newPoint.x, newPoint.z, newPoint.x + vector.x, newPoint.z + -vector.z); // Top
     SDL_RenderDrawLine(_renderer.get(), newPoint.x, newPoint.y, newPoint.x + vector.x, newPoint.y + -vector.y); // Front
-    SDL_RenderDrawLine(_renderer.get(), newPoint.y, newPoint.z, newPoint.y + vector.y, newPoint.z + -vector.z); // Side
+//    SDL_RenderDrawLine(_renderer.get(), newPoint.x, newPoint.z, newPoint.x + vector.x, newPoint.z + -vector.z); // Top
+//    SDL_RenderDrawLine(_renderer.get(), newPoint.y, newPoint.z, newPoint.y + vector.y, newPoint.z + -vector.z); // Side
 }
 
 void Window::RenderText(const std::string& text, const Point& point, const Color& color, const Point& offset)
