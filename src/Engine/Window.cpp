@@ -6,38 +6,35 @@
 using namespace linal::engine;
 using namespace linal::models;
 
-Window::Window(const std::string& title, int xpos, int ypos, int width, int height, enums::WindowView windowView) : _window(nullptr, &SDL_DestroyWindow),
-                                                                                                                    _renderer(nullptr, &SDL_DestroyRenderer),
-                                                                                                                    _font(nullptr, &TTF_CloseFont),
-                                                                                                                    _width(width),
-                                                                                                                    _height(height),
-                                                                                                                    _windowView(windowView)
+Window::Window(const std::string& title, Point position, Point size) : _window(nullptr, &SDL_DestroyWindow),
+                                                                       _renderer(nullptr, &SDL_DestroyRenderer),
+                                                                       _font(nullptr, &TTF_CloseFont),
+                                                                       _size(size),
+                                                                       _center(size * 0.5)
 {
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
-    _window.reset(SDL_CreateWindow(title.c_str(), xpos, ypos, _width, _height, SDL_WINDOW_SHOWN));
+    _window.reset(SDL_CreateWindow(title.c_str(), position.x, position.y, size.x, size.y, SDL_WINDOW_SHOWN));
     _renderer.reset(SDL_CreateRenderer(_window.get(), -1, 0));
     _font.reset(TTF_OpenFont("resources/arial.ttf", 18));
 
     SetDrawColor(Color::black());
 }
 
-void Window::RenderLine(const Point& point, const Vector& vector, const Color& color, const Point& offset)
+void Window::RenderLine(const Point& beginPoint, const Point& endPoint)
 {
-    auto newPoint = CalculatePoint(offset, point);
-    SetDrawColor(color);
-    switch (_windowView)
-    {
-        case enums::WindowView::Front:
-            SDL_RenderDrawLine(_renderer.get(), newPoint.x, newPoint.y, newPoint.x + vector.x, newPoint.y + -vector.y);
-            break;
-        case enums::WindowView::Top:
-            SDL_RenderDrawLine(_renderer.get(), newPoint.x, newPoint.z, newPoint.x + vector.x, newPoint.z + -vector.z);
-            break;
-        case enums::WindowView::Side:
-            SDL_RenderDrawLine(_renderer.get(), newPoint.y, newPoint.z, newPoint.y + vector.y, newPoint.z + -vector.z);
-            break;
-    }
+    auto x1 = _center.x + (beginPoint.x / beginPoint.w * Width() / beginPoint.w);
+    auto y1 = _center.y - (beginPoint.y / beginPoint.w * Height() / beginPoint.w);
+    auto x2 = _center.x + (endPoint.x / endPoint.w * Width() / endPoint.w);
+    auto y2 = _center.y - (endPoint.y / endPoint.w * Height() / endPoint.w);
+
+    RenderLine(x1, y1, x2, y2);
+}
+
+void Window::RenderLine(double x1, double y1, double x2, double y2)
+{
+//    SetDrawColor(engine::Color::green());
+    SDL_RenderDrawLineF(_renderer.get(), x1, y1, x2, y2);
 }
 
 void Window::RenderText(const std::string& text, const Point& point, const Color& color, const Point& offset)
@@ -52,12 +49,6 @@ void Window::RenderText(const std::string& text, const Point& point, const Color
     SDL_Rect rect{(int) newPoint.x, (int) newPoint.y, surface->w, surface->h};
 
     SDL_RenderCopy(_renderer.get(), texture, nullptr, &rect);
-}
-
-void Window::RenderLine(int x1, int y1, int x2, int y2, const Color& color)
-{
-    SetDrawColor(color);
-    SDL_RenderDrawLine(_renderer.get(), x1, y1, x2, y2);
 }
 
 Point Window::CalculatePoint(const Point& offset, Point point, bool invertY)

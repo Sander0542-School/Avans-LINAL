@@ -13,8 +13,13 @@ namespace linal::models
             double x;
             double y;
             double z;
+            double w;
 
-            Point(double x = 0, double y = 0, double z = 0) : x(x), y(y), z(z)
+            Point(double x = 0, double y = 0, double z = 0) : Point(x, y, z, 1)
+            {
+            }
+
+            Point(double x, double y, double z, double w) : x(x), y(y), z(z), w(w)
             {
             }
 

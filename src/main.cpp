@@ -1,4 +1,5 @@
 #include "Engine/InputManager.hpp"
+#include "Engine/Input.hpp"
 #include "Engine/Window.hpp"
 #include "Models/Models.hpp"
 
@@ -9,42 +10,32 @@
 using namespace linal::engine;
 using namespace linal::models;
 using namespace linal::entities;
-using namespace linal::enums;
 
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 450;
-
-const int SCALE = 25;
+const int WINDOW_WIDTH = 1200;
+const int WINDOW_HEIGHT = 600;
 
 int main(int argc, char* args[])
 {
-    std::vector<Window> windows;
-    windows.emplace_back("LINAL Assessment - Front", 10, 50, WINDOW_WIDTH, WINDOW_HEIGHT, WindowView::Front);
-    windows.emplace_back("LINAL Assessment - Top", 10, WINDOW_HEIGHT + 100, WINDOW_WIDTH, WINDOW_HEIGHT, WindowView::Top);
-    windows.emplace_back("LINAL Assessment - Side", WINDOW_WIDTH + 20, WINDOW_HEIGHT + 100, WINDOW_WIDTH, WINDOW_HEIGHT, WindowView::Side);
-
-    Point worldCenter{WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 0};
-    int worldScale = SCALE;
+    Window window{"LINAL Assessment", {10, 50}, {WINDOW_WIDTH, WINDOW_HEIGHT}};
 
     std::vector<std::shared_ptr<linal::entities::common::IDrawable>> drawables;
-    auto block = std::make_shared<Block>();
-    drawables.push_back(block);
+    auto star = std::make_shared<Cube>();
+    drawables.push_back(star);
 
     while (true)
     {
         if (!InputManager::GetInstance().Update()) break;
 
-        for (auto& window: windows) window.Clear();
+        window.Clear();
 
         // transform models
 
         for (const auto& drawable: drawables)
         {
-            for (auto& window: windows)
-                drawable->Draw(window, worldCenter, worldScale);
+            drawable->Draw(window);
         }
 
-        for (auto& window: windows) window.SwapBuffers();
+        window.SwapBuffers();
 
         SDL_Delay(25);
     }

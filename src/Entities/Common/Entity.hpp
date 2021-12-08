@@ -17,6 +17,7 @@ namespace linal::entities::common
             models::Point _center{0, 0, 0};
             std::vector<models::Point> _points{};
             std::vector<std::pair<size_t, size_t>> _lines{};
+            models::Matrix _projection = models::Matrix::Projection(0.1, 1000, 60);
 
         public:
             void Transform(const models::Matrix& matrix) override
@@ -28,13 +29,18 @@ namespace linal::entities::common
                 }
             }
 
-            void Draw(engine::Window& window, const models::Point& worldCenter, int scale) override
+            void Draw(engine::Window& window, const engine::Color& color) override
             {
+                window.SetDrawColor(color);
                 for (const auto& pair: _lines)
                 {
-                    models::Vector line{_points[pair.first], _points[pair.second]};
+                    auto beginPoint = _points[pair.first] * _projection;
+                    auto endPoint = _points[pair.second] * _projection;
 
-                    window.RenderLine(_points[pair.first] * scale, line * scale, engine::Color::orange(), worldCenter);
+                    if (beginPoint.w <= 0 || endPoint.w <= 0)
+                        continue;
+
+                    window.RenderLine(beginPoint, endPoint);
                 }
             }
 

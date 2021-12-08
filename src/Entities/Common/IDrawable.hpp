@@ -9,7 +9,7 @@ namespace linal::entities::common
     class IDrawable
     {
         public:
-            virtual void Draw(engine::Window& window, const models::Point& worldCenter, int scale) = 0;
+            virtual void Draw(engine::Window& window, const engine::Color& color = engine::Color::white()) = 0;
     };
 }
 
