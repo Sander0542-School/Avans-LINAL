@@ -27,8 +27,8 @@ int main(int argc, char* args[])
     int worldScale = SCALE;
 
     std::vector<std::shared_ptr<linal::entities::common::IDrawable>> drawables;
-    auto block = std::make_shared<Block>();
-    drawables.push_back(block);
+    auto entity = std::make_shared<Spaceship>();
+    drawables.push_back(entity);
 
     while (true)
     {
