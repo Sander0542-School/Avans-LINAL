@@ -11,16 +11,16 @@ namespace linal::entities
             Block()
             {
                 // POINTS
-                _points.emplace_back(0, 0, 0); // 0
-                _points.emplace_back(6, 0, 0); // 1
-                _points.emplace_back(0, 4, 0); // 2
-                _points.emplace_back(1, 4, 0); // 3
-                _points.emplace_back(1, 1, 0); // 4
-                _points.emplace_back(6, 1, 0); // 5
-                _points.emplace_back(6, 1, 1); // 6
-                _points.emplace_back(1, 4, 1); // 7
-                _points.emplace_back(0, 4, 4); // 8
-                _points.emplace_back(1, 4, 3); // 9
+                _points.emplace_back(0, 0, 0); // 00
+                _points.emplace_back(6, 0, 0); // 01
+                _points.emplace_back(0, 4, 0); // 02
+                _points.emplace_back(1, 4, 0); // 03
+                _points.emplace_back(1, 1, 0); // 04
+                _points.emplace_back(6, 1, 0); // 05
+                _points.emplace_back(6, 1, 1); // 06
+                _points.emplace_back(1, 4, 1); // 07
+                _points.emplace_back(0, 4, 4); // 08
+                _points.emplace_back(1, 4, 3); // 09
                 _points.emplace_back(1, 1, 1); // 10
                 _points.emplace_back(6, 0, 4); // 11
                 _points.emplace_back(6, 4, 4); // 12
@@ -30,7 +30,6 @@ namespace linal::entities
                 _points.emplace_back(1, 1, 2); // 16
                 _points.emplace_back(1, 4, 2); // 17
                 _points.emplace_back(6, 1, 2); // 18
-
 
                 // LINES
                 _lines.emplace_back(0, 1);
