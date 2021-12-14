@@ -11,9 +11,9 @@ TEST(PointTests, TestPointAdditionAssignmentOperator)
     pointA += pointB;
 
     Point pointZ{5, 15, 10};
-    ASSERT_TRUE(pointA.x == pointZ.x);
-    ASSERT_TRUE(pointA.y == pointZ.y);
-    ASSERT_TRUE(pointA.z == pointZ.z);
+    ASSERT_EQ(pointA.x, pointZ.x);
+    ASSERT_EQ(pointA.y, pointZ.y);
+    ASSERT_EQ(pointA.z, pointZ.z);
 }
 
 TEST(PointTests, TestPointAdditionSubtractionOperator)
@@ -24,7 +24,7 @@ TEST(PointTests, TestPointAdditionSubtractionOperator)
     pointA -= pointB;
 
     Point pointZ{15, 5, 10};
-    ASSERT_TRUE(pointA.x == pointZ.x);
-    ASSERT_TRUE(pointA.y == pointZ.y);
-    ASSERT_TRUE(pointA.z == pointZ.z);
+    ASSERT_EQ(pointA.x, pointZ.x);
+    ASSERT_EQ(pointA.y, pointZ.y);
+    ASSERT_EQ(pointA.z, pointZ.z);
 }
