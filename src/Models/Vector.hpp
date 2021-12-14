@@ -46,6 +46,11 @@ namespace linal::models
                 return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);
             }
 
+            [[nodiscard]] Vector CrossProduct(const Vector& rhs) const
+            {
+                return {y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z, x * rhs.y - y * rhs.x};
+            }
+
             [[nodiscard]] double Angle(const Vector& rhs) const
             {
                 auto dotProduct = DotProduct(rhs);

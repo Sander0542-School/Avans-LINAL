@@ -23,3 +23,16 @@ TEST(VectorTests, TestAngleMethod)
 
     ASSERT_EQ(angle, 0.87);
 }
+
+TEST(VectorTests, TestCrossProductMethod)
+{
+    Vector vectorV{1, 0, 0};
+    Vector vectorW{0, 1, 0};
+
+    auto vectorX = vectorV.CrossProduct(vectorW);
+
+    Vector vectorZ{0, 0, 1};
+    ASSERT_TRUE(vectorX.x == vectorZ.x);
+    ASSERT_TRUE(vectorX.y == vectorZ.y);
+    ASSERT_TRUE(vectorX.z == vectorZ.z);
+}
