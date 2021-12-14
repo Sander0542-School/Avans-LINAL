@@ -59,6 +59,20 @@ namespace linal::models
                 return dotProduct / distanceSum;
             }
 
+            [[nodiscard]] double LinearIndependence(const Vector& rhs) const
+            {
+                auto diffX = rhs.x / x;
+                auto diffY = rhs.y / y;
+                auto diffZ = rhs.z / z;
+
+                if (diffX == diffY && diffY == diffZ)
+                {
+                    return diffX;
+                }
+
+                return 0;
+            }
+
             [[nodiscard]] std::string ToString() const override
             {
                 auto format = "%d";

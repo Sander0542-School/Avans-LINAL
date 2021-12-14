@@ -32,7 +32,17 @@ TEST(VectorTests, TestCrossProductMethod)
     auto vectorX = vectorV.CrossProduct(vectorW);
 
     Vector vectorZ{0, 0, 1};
-    ASSERT_TRUE(vectorX.x == vectorZ.x);
-    ASSERT_TRUE(vectorX.y == vectorZ.y);
-    ASSERT_TRUE(vectorX.z == vectorZ.z);
+    ASSERT_EQ(vectorX.x, vectorZ.x);
+    ASSERT_EQ(vectorX.y, vectorZ.y);
+    ASSERT_EQ(vectorX.z, vectorZ.z);
+}
+
+TEST(VectorTests, TestLinearIndependenceMethod)
+{
+    Vector vectorV{2, 6, 10};
+    Vector vectorW{1, 3, 5};
+
+    auto linearIndependence = vectorW.LinearIndependence(vectorV);
+
+    ASSERT_EQ(linearIndependence, 2);
 }
