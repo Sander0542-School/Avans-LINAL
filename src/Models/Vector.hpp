@@ -41,6 +41,38 @@ namespace linal::models
                 return Vector{x / distance, y / distance, z / distance};
             }
 
+            [[nodiscard]] double DotProduct(const Vector& rhs) const
+            {
+                return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);
+            }
+
+            [[nodiscard]] Vector CrossProduct(const Vector& rhs) const
+            {
+                return {y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z, x * rhs.y - y * rhs.x};
+            }
+
+            [[nodiscard]] double Angle(const Vector& rhs) const
+            {
+                auto dotProduct = DotProduct(rhs);
+                auto distanceSum = Length() * rhs.Length();
+
+                return dotProduct / distanceSum;
+            }
+
+            [[nodiscard]] double LinearIndependence(const Vector& rhs) const
+            {
+                auto diffX = rhs.x / x;
+                auto diffY = rhs.y / y;
+                auto diffZ = rhs.z / z;
+
+                if (diffX == diffY && diffY == diffZ)
+                {
+                    return diffX;
+                }
+
+                return 0;
+            }
+
             [[nodiscard]] std::string ToString() const override
             {
                 auto format = "%d";
