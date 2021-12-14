@@ -10,7 +10,8 @@ namespace linal::entities
     {
         private:
             models::Matrix rotateLeftMatrix = models::Matrix::Roll(2.5);
-            models::Matrix rotateRightMatrix = models::Matrix::Roll(2.5);
+            models::Matrix rotateRightMatrix = models::Matrix::Roll(-2.5);
+
         public:
             Block()
             {
@@ -47,6 +48,7 @@ namespace linal::entities
                     auto center = this->Center();
                     this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * rotateRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
                 }
+
 
             }
     };

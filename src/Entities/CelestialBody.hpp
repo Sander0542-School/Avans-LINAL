@@ -7,6 +7,12 @@ namespace linal::entities
 {
     class CelestialBody : public common::Entity
     {
+        private:
+            models::Matrix _rotateLeftMatrix = models::Matrix::Roll(2.5);
+            models::Matrix _rotateRightMatrix = models::Matrix::Roll(-2.5);
+            models::Matrix _scaleUpMatrix = models::Matrix::Scaling(1.05, 1.05, 1.05);
+            models::Matrix _scaleDownMatrix = models::Matrix::Scaling(0.95, 0.95, 0.95);
+
         public:
             CelestialBody()
             {
@@ -43,6 +49,35 @@ namespace linal::entities
 
                 // CENTER
                 _center = {0, 0, 0};
+            }
+
+            void OnUpdate() override
+            {
+                if (!engine::Input::AnyKey()) return;
+
+                // ROTATION
+                if (engine::Input::GetKey(engine::Input::KeyCode::C))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _rotateLeftMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
+                if (engine::Input::GetKey(engine::Input::KeyCode::V))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _rotateRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
+
+                // SCALING
+                if (engine::Input::GetKey(engine::Input::KeyCode::U))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _scaleUpMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
+                if (engine::Input::GetKey(engine::Input::KeyCode::I))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _scaleDownMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
             }
     };
 }

@@ -7,8 +7,9 @@ void Game::Start()
     std::vector<std::shared_ptr<entities::common::IDrawable>> drawables;
     std::vector<std::shared_ptr<entities::common::IUpdatable>> updatables;
 
-    auto entity = std::make_shared<entities::Block>();
+    auto entity = std::make_shared<entities::CelestialBody>();
     drawables.push_back(entity);
+    updatables.push_back(entity);
 
     while (!_quit)
     {
