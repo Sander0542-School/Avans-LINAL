@@ -148,22 +148,27 @@ namespace linal::models
                 return matrix;
             }
 
-            static Matrix Camera(const models::Vector& eye, const models::Vector& lookAt, models::Vector up, size_t size = 4)
+            static Matrix Camera(const models::Vector& origin, const models::Vector& side, models::Vector top, models::Vector heading, size_t size = 4)
             {
-                auto direction = (eye - lookAt).Unit();
-                auto right = (up * direction).Unit();
-                up = (direction * right).Unit();
+                auto direction = heading.Unit();
+                auto up = top.Unit();
+                auto right = side.Unit();
 
                 Matrix matrix = Unit(size);
                 matrix._matrix[0][0] = right.x;
-                matrix._matrix[0][1] = up.x;
-                matrix._matrix[0][2] = direction.x;
-                matrix._matrix[1][0] = right.y;
+                matrix._matrix[0][1] = right.y;
+                matrix._matrix[0][2] = right.z;
+                matrix._matrix[0][3] = -right.DotProduct(origin);
+
+                matrix._matrix[1][0] = up.x;
                 matrix._matrix[1][1] = up.y;
-                matrix._matrix[1][2] = right.y;
-                matrix._matrix[2][0] = direction.z;
-                matrix._matrix[2][1] = up.z;
+                matrix._matrix[1][2] = up.z;
+                matrix._matrix[0][3] = -up.DotProduct(origin);
+
+                matrix._matrix[2][0] = direction.x;
+                matrix._matrix[2][1] = direction.y;
                 matrix._matrix[2][2] = direction.z;
+                matrix._matrix[0][3] = -direction.DotProduct(origin);
 
                 return matrix;
             }
