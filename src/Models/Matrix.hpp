@@ -112,7 +112,8 @@ namespace linal::models
                 return matrix;
             }
 
-            static Matrix RotationX(double degrees, size_t size = 4)
+            // RotationX
+            static Matrix Pitch(double degrees, size_t size = 4)
             {
                 auto radians = utils::MathUtil::DegreesToRadians(degrees);
                 Matrix matrix = Unit(size);
@@ -124,7 +125,8 @@ namespace linal::models
                 return matrix;
             }
 
-            static Matrix RotationY(double degrees, size_t size = 4)
+            // RotationY
+            static Matrix Yaw(double degrees, size_t size = 4)
             {
                 auto radians = utils::MathUtil::DegreesToRadians(degrees);
                 Matrix matrix = Unit(size);
@@ -136,7 +138,8 @@ namespace linal::models
                 return matrix;
             }
 
-            static Matrix RotationZ(double degrees, size_t size = 4)
+            // RotationZ
+            static Matrix Roll(double degrees, size_t size = 4)
             {
                 auto radians = utils::MathUtil::DegreesToRadians(degrees);
                 Matrix matrix = Unit(size);
