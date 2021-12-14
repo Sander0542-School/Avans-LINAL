@@ -41,15 +41,23 @@ namespace linal::models
                 return Vector{x / distance, y / distance, z / distance};
             }
 
+            [[nodiscard]] double DotProduct(const Vector& rhs) const
+            {
+                return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);
+            }
+
+            [[nodiscard]] double Angle(const Vector& rhs) const
+            {
+                auto dotProduct = DotProduct(rhs);
+                auto distanceSum = Length() * rhs.Length();
+
+                return dotProduct / distanceSum;
+            }
+
             [[nodiscard]] std::string ToString() const override
             {
                 auto format = "%d";
                 return "(" + boost::str(boost::format(format) % x) + "," + boost::str(boost::format(format) % y) + "," + boost::str(boost::format(format) % z) + ")";
-            }
-
-            [[nodiscard]] double DotProduct(const Point& rhs) const
-            {
-                return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);
             }
 
             Vector& operator+=(const Vector& rhs)
