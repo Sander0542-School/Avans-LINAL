@@ -39,6 +39,11 @@ namespace linal::engine
 
             void Clear();
 
+            [[nodiscard]] models::Point Size() const
+            {
+                return _size;
+            }
+
             [[nodiscard]] int Width() const
             {
                 return _size.x;
