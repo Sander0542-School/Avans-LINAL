@@ -5,7 +5,7 @@ using namespace linal;
 void Game::Start()
 {
     std::vector<std::shared_ptr<entities::common::IDrawable>> drawables;
-    auto entity = std::make_shared<entities::CelestialBody>();
+    auto entity = std::make_shared<entities::Block>();
     drawables.push_back(entity);
 
     while (!_quit)
