@@ -2,6 +2,7 @@
 #define LINAL_OPDRACHTEN_IOBJECT_HPP
 
 #include "IDrawable.hpp"
+#include "IUpdatable.hpp"
 #include "ITransformable.hpp"
 
 #include "Models/Models.hpp"
@@ -11,7 +12,7 @@
 
 namespace linal::entities::common
 {
-    class Entity : public IDrawable, public ITransformable
+    class Entity : public IDrawable, public ITransformable, public IUpdatable
     {
         protected:
             models::Point _center{0, 0, 0};
