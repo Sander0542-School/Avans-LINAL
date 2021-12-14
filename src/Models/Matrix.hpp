@@ -111,7 +111,31 @@ namespace linal::models
                 return matrix;
             }
 
-            static Matrix Rotation(double degrees, size_t size = 4)
+            static Matrix RotationX(double degrees, size_t size = 4)
+            {
+                auto radians = utils::MathUtil::DegreesToRadians(degrees);
+                Matrix matrix = Unit(size);
+                matrix._matrix[1][1] = cos(radians);
+                matrix._matrix[2][1] = sin(radians);
+                matrix._matrix[1][2] = -matrix._matrix[2][1];
+                matrix._matrix[2][2] = matrix._matrix[1][1];
+
+                return matrix;
+            }
+
+            static Matrix RotationY(double degrees, size_t size = 4)
+            {
+                auto radians = utils::MathUtil::DegreesToRadians(degrees);
+                Matrix matrix = Unit(size);
+                matrix._matrix[0][0] = cos(radians);
+                matrix._matrix[0][2] = sin(radians);
+                matrix._matrix[2][0] = -matrix._matrix[0][2];
+                matrix._matrix[2][2] = matrix._matrix[0][0];
+
+                return matrix;
+            }
+
+            static Matrix RotationZ(double degrees, size_t size = 4)
             {
                 auto radians = utils::MathUtil::DegreesToRadians(degrees);
                 Matrix matrix = Unit(size);
