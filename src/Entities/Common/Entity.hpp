@@ -17,7 +17,6 @@ namespace linal::entities::common
             models::Point _center{0, 0, 0};
             std::vector<models::Point> _points{};
             std::vector<std::pair<size_t, size_t>> _lines{};
-            models::Matrix _projection = models::Matrix::Projection(0.1, 1000, 60);
 
         public:
             void Transform(const models::Matrix& matrix) override
@@ -31,14 +30,28 @@ namespace linal::entities::common
 
             void Draw(engine::Window& window, const engine::Color& color) override
             {
-                window.SetDrawColor(color);
-                for (const auto& pair: _lines)
-                {
-                    auto beginPoint = _points[pair.first] * _projection;
-                    auto endPoint = _points[pair.second] * _projection;
+                auto windowCenter = window.Size() * 0.5;
 
-                    if (beginPoint.w <= 0 || endPoint.w <= 0)
-                        continue;
+                auto cameraMatrix = models::Matrix::Camera({0, 20, 0}, {-1, 0, 0}, {0, 1, 0}, {0, 0, -1});
+                auto projectionMatrix = models::Matrix::Projection(10, 1000, 90);
+
+                std::vector<models::Point> points;
+
+                for (const auto& point: _points)
+                {
+                    auto cameraPoint = projectionMatrix * cameraMatrix * point;
+
+                    auto x = windowCenter.x + (cameraPoint.x / cameraPoint.w) * windowCenter.x;
+                    auto y = windowCenter.y + (cameraPoint.y / cameraPoint.w) * windowCenter.y;
+
+                    points.emplace_back(x, y, -cameraPoint.z);
+                }
+
+                window.SetDrawColor(color);
+                for (const auto&[from, to]: _lines)
+                {
+                    const auto& beginPoint = points[from];
+                    const auto& endPoint = points[to];
 
                     window.RenderLine(beginPoint, endPoint);
                 }
