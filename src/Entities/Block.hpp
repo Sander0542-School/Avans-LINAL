@@ -8,10 +8,6 @@ namespace linal::entities
 {
     class Block : public common::Entity
     {
-        private:
-            models::Matrix rotateLeftMatrix = models::Matrix::Roll(2.5);
-            models::Matrix rotateRightMatrix = models::Matrix::Roll(-2.5);
-
         public:
             Block()
             {
@@ -65,22 +61,6 @@ namespace linal::entities
                 _lines.emplace_back(1, 11);
                 _lines.emplace_back(12, 11);
 
-            }
-
-            void OnUpdate() override
-            {
-                if (!engine::Input::AnyKey()) return;
-
-                if (engine::Input::GetKey(engine::Input::KeyCode::C))
-                {
-                    auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * rotateLeftMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
-                }
-                if (engine::Input::GetKey(engine::Input::KeyCode::V))
-                {
-                    auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * rotateRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
-                }
             }
     };
 }
