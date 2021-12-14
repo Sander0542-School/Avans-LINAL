@@ -47,6 +47,11 @@ namespace linal::models
                 return "(" + boost::str(boost::format(format) % x) + "," + boost::str(boost::format(format) % y) + "," + boost::str(boost::format(format) % z) + ")";
             }
 
+            [[nodiscard]] double DotProduct(const Point& rhs) const
+            {
+                return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);
+            }
+
             Vector& operator+=(const Vector& rhs)
             {
                 x += rhs.x;
