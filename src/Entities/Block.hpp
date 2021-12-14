@@ -48,8 +48,6 @@ namespace linal::entities
                     auto center = this->Center();
                     this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * rotateRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
                 }
-
-
             }
     };
 }
