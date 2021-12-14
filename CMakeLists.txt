@@ -23,11 +23,11 @@ set(PROJECT_SOURCE_LIBS SDL2::SDL2 SDL2::SDL2main SDL2::SDL2-static SDL2::SDL2_t
 set(PROJECT_TEST_LIBS GTest::gmock GTest::gtest GTest::gmock_main GTest::gtest_main)
 
 add_executable(${PROJECT_NAME} ${SIM_SOURCES} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_LIBS})
 add_dependencies(${PROJECT_NAME} copy_resources)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_LIBS})
 
 set(PROJECT_NAME_TESTS ${PROJECT_NAME}-tests)
 add_executable(${PROJECT_NAME_TESTS} ${TEST_SOURCES} ${SOURCES})
-target_link_libraries(${PROJECT_NAME_TESTS} PRIVATE ${PROJECT_SOURCE_LIBS} ${PROJECT_TEST_LIBS})
 add_dependencies(${PROJECT_NAME_TESTS} copy_resources)
+target_link_libraries(${PROJECT_NAME_TESTS} PRIVATE ${PROJECT_SOURCE_LIBS} ${PROJECT_TEST_LIBS})
 gtest_discover_tests(${PROJECT_NAME_TESTS})
