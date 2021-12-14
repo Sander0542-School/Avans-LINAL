@@ -25,8 +25,6 @@ namespace linal::engine
         public:
             Window(const std::string& title, models::Point position, models::Point size);
 
-            void RenderLine(const models::Point& beginPoint, const models::Point& vector);
-
             void RenderLine(double x1, double y1, double x2, double y2);
 
             void RenderText(const std::string& text, const models::Point& point, const Color& color, const models::Point& offset = {});

@@ -16,7 +16,6 @@ namespace linal
         private:
             const double WINDOW_WIDTH = 1200;
             const double WINDOW_HEIGHT = 600;
-            const int SCALE = 25;
 
             bool _quit = false;
 

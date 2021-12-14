@@ -42,7 +42,7 @@ namespace linal::entities::common
             {
                 auto windowCenter = window.Size() * 0.5;
 
-                auto cameraMatrix = models::Matrix::Camera({0, 20, 0}, {-1, 0, 0}, {0, 1, 0}, {0, 0, -1});
+                auto cameraMatrix = models::Matrix::Camera({0, 20, -200}, {-1, 0, 0}, {0, 1, 0}, {0, 0, -1});
                 auto projectionMatrix = models::Matrix::Projection(10, 1000, 90);
 
                 std::vector<models::Point> points;
@@ -63,7 +63,7 @@ namespace linal::entities::common
                     const auto& beginPoint = points[from];
                     const auto& endPoint = points[to];
 
-                    window.RenderLine(beginPoint, endPoint);
+                    window.RenderLine(beginPoint.x, beginPoint.y, endPoint.x, endPoint.y);
                 }
             }
 
@@ -74,8 +74,6 @@ namespace linal::entities::common
 
             void OnUpdate() override
             {
-                if (!engine::Input::AnyKey()) return;
-
                 // ROTATION: ROLL
                 if (engine::Input::GetKey(engine::Input::KeyCode::Q))
                 {
@@ -109,7 +107,7 @@ namespace linal::entities::common
                 if (engine::Input::GetKey(engine::Input::KeyCode::S))
                 {
                     auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _pitchRightMatrix  * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _pitchRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
                 }
 
                 // SCALING

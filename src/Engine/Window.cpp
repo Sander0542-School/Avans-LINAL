@@ -21,19 +21,8 @@ Window::Window(const std::string& title, Point position, Point size) : _window(n
     SetDrawColor(Color::black());
 }
 
-void Window::RenderLine(const Point& beginPoint, const Point& endPoint)
-{
-    auto x1 = _center.x + (beginPoint.x / beginPoint.w * Width() / beginPoint.w);
-    auto y1 = _center.y - (beginPoint.y / beginPoint.w * Height() / beginPoint.w);
-    auto x2 = _center.x + (endPoint.x / endPoint.w * Width() / endPoint.w);
-    auto y2 = _center.y - (endPoint.y / endPoint.w * Height() / endPoint.w);
-
-    RenderLine(x1, y1, x2, y2);
-}
-
 void Window::RenderLine(double x1, double y1, double x2, double y2)
 {
-//    SetDrawColor(engine::Color::green());
     SDL_RenderDrawLineF(_renderer.get(), x1, y1, x2, y2);
 }
 

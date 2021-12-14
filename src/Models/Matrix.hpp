@@ -151,7 +151,7 @@ namespace linal::models
                 return matrix;
             }
 
-            static Matrix Camera(const models::Vector& origin, const models::Vector& side, models::Vector top, models::Vector heading, size_t size = 4)
+            static Matrix Camera(const models::Vector& origin, const models::Vector& side, const models::Vector& top, const models::Vector& heading, size_t size = 4)
             {
                 auto direction = heading.Unit();
                 auto up = top.Unit();
@@ -166,19 +166,19 @@ namespace linal::models
                 matrix._matrix[1][0] = up.x;
                 matrix._matrix[1][1] = up.y;
                 matrix._matrix[1][2] = up.z;
-                matrix._matrix[0][3] = -up.DotProduct(origin);
+                matrix._matrix[1][3] = -up.DotProduct(origin);
 
                 matrix._matrix[2][0] = direction.x;
                 matrix._matrix[2][1] = direction.y;
                 matrix._matrix[2][2] = direction.z;
-                matrix._matrix[0][3] = -direction.DotProduct(origin);
+                matrix._matrix[2][3] = -direction.DotProduct(origin);
 
                 return matrix;
             }
 
-            static Matrix Projection(double near, double far, double fovy, size_t size = 4)
+            static Matrix Projection(double near, double far, double fov, size_t size = 4)
             {
-                double scale = near * tan(fovy * 0.5);
+                double scale = near * tan((acos(-1) / 180) * fov * 0.5);
                 Matrix matrix{size, size};
                 matrix._matrix[0][0] = scale;
                 matrix._matrix[1][1] = scale;
