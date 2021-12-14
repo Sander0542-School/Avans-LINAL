@@ -2,6 +2,7 @@
 #define LINAL_OPDRACHTEN_STAR_HPP
 
 #include "Common/Entity.hpp"
+#include "Engine/Input.hpp"
 
 namespace linal::entities
 {

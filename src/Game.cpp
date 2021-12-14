@@ -5,8 +5,11 @@ using namespace linal;
 void Game::Start()
 {
     std::vector<std::shared_ptr<entities::common::IDrawable>> drawables;
-    auto entity = std::make_shared<entities::Block>();
+    std::vector<std::shared_ptr<entities::common::IUpdatable>> updatables;
+
+    auto entity = std::make_shared<entities::Spaceship>();
     drawables.push_back(entity);
+    updatables.push_back(entity);
 
     while (!_quit)
     {
@@ -14,6 +17,11 @@ void Game::Start()
         _window.Clear();
 
         // transform models
+
+        for (const auto& updatable: updatables)
+        {
+            updatable->OnUpdate();
+        }
 
         for (const auto& drawable: drawables)
         {
