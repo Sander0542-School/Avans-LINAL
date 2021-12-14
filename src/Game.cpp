@@ -17,7 +17,7 @@ void Game::Start()
 
         for (const auto& drawable: drawables)
         {
-            drawable->Draw(_window, _worldCenter, SCALE);
+            drawable->Draw(_window);
         }
 
         _window.SwapBuffers();
