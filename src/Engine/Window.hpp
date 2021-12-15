@@ -5,7 +5,6 @@
 #include <SDL_ttf.h>
 
 #include "Color.hpp"
-#include "Enums/WindowView.hpp"
 #include "Models/Models.hpp"
 
 #include <memory>
@@ -19,17 +18,14 @@ namespace linal::engine
             std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> _window;
             std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> _renderer;
             std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> _font;
-            enums::WindowView _windowView;
 
-            int _width;
-            int _height;
+            models::Point _size;
+            models::Point _center;
 
         public:
-            Window(const std::string& title, int xpos, int ypos, int width, int height, enums::WindowView windowView = enums::WindowView::Front);
+            Window(const std::string& title, models::Point position, models::Point size);
 
-            void RenderLine(const models::Point& point, const models::Vector& vector, const Color& color, const models::Point& offset = {});
-
-            void RenderLine(int x1, int y1, int x2, int y2, const Color& color);
+            void RenderLine(double x1, double y1, double x2, double y2);
 
             void RenderText(const std::string& text, const models::Point& point, const Color& color, const models::Point& offset = {});
 
@@ -41,14 +37,19 @@ namespace linal::engine
 
             void Clear();
 
+            [[nodiscard]] models::Point Size() const
+            {
+                return _size;
+            }
+
             [[nodiscard]] int Width() const
             {
-                return _width;
+                return _size.x;
             }
 
             [[nodiscard]] int Height() const
             {
-                return _height;
+                return _size.y;
             }
     };
 }

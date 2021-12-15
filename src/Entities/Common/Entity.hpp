@@ -38,13 +38,32 @@ namespace linal::entities::common
                 }
             }
 
-            void Draw(engine::Window& window, const models::Point& worldCenter, int scale) override
+            void Draw(engine::Window& window, const engine::Color& color) override
             {
-                for (const auto& pair: _lines)
-                {
-                    models::Vector line{_points[pair.first], _points[pair.second]};
+                auto windowCenter = window.Size() * 0.5;
 
-                    window.RenderLine(_points[pair.first] * scale, line * scale, engine::Color::orange(), worldCenter);
+                auto cameraMatrix = models::Matrix::Camera({0, 20, -200}, {-1, 0, 0}, {0, 1, 0}, {0, 0, -1});
+                auto projectionMatrix = models::Matrix::Projection(10, 1000, 90);
+
+                std::vector<models::Point> points;
+
+                for (const auto& point: _points)
+                {
+                    auto cameraPoint = projectionMatrix * cameraMatrix * point;
+
+                    auto x = windowCenter.x + (cameraPoint.x / cameraPoint.w) * windowCenter.x;
+                    auto y = windowCenter.y + (cameraPoint.y / cameraPoint.w) * windowCenter.y;
+
+                    points.emplace_back(x, y, -cameraPoint.z);
+                }
+
+                window.SetDrawColor(color);
+                for (const auto&[from, to]: _lines)
+                {
+                    const auto& beginPoint = points[from];
+                    const auto& endPoint = points[to];
+
+                    window.RenderLine(beginPoint.x, beginPoint.y, endPoint.x, endPoint.y);
                 }
             }
 
@@ -55,8 +74,6 @@ namespace linal::entities::common
 
             void OnUpdate() override
             {
-                if (!engine::Input::AnyKey()) return;
-
                 // ROTATION: ROLL
                 if (engine::Input::GetKey(engine::Input::KeyCode::Q))
                 {
@@ -90,7 +107,7 @@ namespace linal::entities::common
                 if (engine::Input::GetKey(engine::Input::KeyCode::S))
                 {
                     auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _pitchRightMatrix  * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _pitchRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
                 }
 
                 // SCALING

@@ -77,6 +77,7 @@ namespace linal::models
                 _matrix[0][0] = point.x;
                 _matrix[1][0] = point.y;
                 _matrix[2][0] = point.z;
+                _matrix[3][0] = point.w;
             }
 
             static Matrix Unit(size_t size)
@@ -146,6 +147,44 @@ namespace linal::models
                 matrix._matrix[1][0] = sin(radians);
                 matrix._matrix[0][1] = -matrix._matrix[1][0];
                 matrix._matrix[1][1] = matrix._matrix[0][0];
+
+                return matrix;
+            }
+
+            static Matrix Camera(const models::Vector& origin, const models::Vector& side, const models::Vector& top, const models::Vector& heading, size_t size = 4)
+            {
+                auto direction = heading.Unit();
+                auto up = top.Unit();
+                auto right = side.Unit();
+
+                Matrix matrix = Unit(size);
+                matrix._matrix[0][0] = right.x;
+                matrix._matrix[0][1] = right.y;
+                matrix._matrix[0][2] = right.z;
+                matrix._matrix[0][3] = -right.DotProduct(origin);
+
+                matrix._matrix[1][0] = up.x;
+                matrix._matrix[1][1] = up.y;
+                matrix._matrix[1][2] = up.z;
+                matrix._matrix[1][3] = -up.DotProduct(origin);
+
+                matrix._matrix[2][0] = direction.x;
+                matrix._matrix[2][1] = direction.y;
+                matrix._matrix[2][2] = direction.z;
+                matrix._matrix[2][3] = -direction.DotProduct(origin);
+
+                return matrix;
+            }
+
+            static Matrix Projection(double near, double far, double fov, size_t size = 4)
+            {
+                double scale = near * tan((acos(-1) / 180) * fov * 0.5);
+                Matrix matrix{size, size};
+                matrix._matrix[0][0] = scale;
+                matrix._matrix[1][1] = scale;
+                matrix._matrix[2][2] = -far / (far - near);
+                matrix._matrix[2][3] = -1;
+                matrix._matrix[3][2] = -(far * near) / (far - near);
 
                 return matrix;
             }
@@ -280,7 +319,7 @@ namespace linal::models
             {
                 Matrix matrix = lhs * Matrix(rhs, lhs.Columns());
 
-                return {matrix._matrix[0][0], matrix._matrix[1][0], matrix._matrix[2][0]};
+                return {matrix._matrix[0][0], matrix._matrix[1][0], matrix._matrix[2][0], matrix._matrix[3][0]};
             }
 
             friend Point operator*(const Point& lhs, const Matrix& rhs)
