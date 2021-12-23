@@ -6,7 +6,7 @@
 #include "Common/ITransformable.hpp"
 #include "Common/IUpdatable.hpp"
 
-const double MovementSpeed = 1;
+const double MovementSpeed = 0.5;
 
 namespace linal::entities
 {
@@ -20,6 +20,7 @@ namespace linal::entities
             double _fov;
 
             models::Vector _originalEye;
+            models::Vector _originalLookAt;
 
         public:
             Camera(const models::Vector& eye, const models::Vector& lookAt, double near = 0.1, double far = 100, double fov = 60) : _eye(eye),
@@ -27,7 +28,8 @@ namespace linal::entities
                                                                                                                                     _near(near),
                                                                                                                                     _far(far),
                                                                                                                                     _fov(fov),
-                                                                                                                                    _originalEye(eye)
+                                                                                                                                    _originalEye(eye),
+                                                                                                                                    _originalLookAt(lookAt)
             {
             }
 
@@ -39,32 +41,44 @@ namespace linal::entities
             {
                 if (engine::Input::GetKey(engine::Input::KeyCode::KEYPAD_8_AND_UP_ARROW))
                 {
-                    _eye.y += MovementSpeed;
+                    Move(Up(), -MovementSpeed);
                 }
                 if (engine::Input::GetKey(engine::Input::KeyCode::KEYPAD_2_AND_DOWN_ARROW))
                 {
-                    _eye.y -= MovementSpeed;
+                    Move(Up(), MovementSpeed);
                 }
                 if (engine::Input::GetKey(engine::Input::KeyCode::KEYPAD_4_AND_LEFT_ARROW))
                 {
-                    _eye.x -= MovementSpeed;
+                    Move(Right(), -MovementSpeed);
                 }
                 if (engine::Input::GetKey(engine::Input::KeyCode::KEYPAD_6_AND_RIGHT_ARROW))
                 {
-                    _eye.x += MovementSpeed;
+                    Move(Right(), MovementSpeed);
                 }
                 if (engine::Input::GetKey(engine::Input::KeyCode::KEYPAD_9_AND_PAGE_UP))
                 {
-                    _eye.z += MovementSpeed;
+                    Move(Direction(), -MovementSpeed);
                 }
                 if (engine::Input::GetKey(engine::Input::KeyCode::KEYPAD_3_AND_PAGE_DOWN))
                 {
-                    _eye.z -= MovementSpeed;
+                    Move(Direction(), MovementSpeed);
                 }
                 if (engine::Input::GetKey(engine::Input::KeyCode::KEYPAD_5))
                 {
                     _eye = _originalEye;
+                    _lookAt = _originalLookAt;
                 }
+            }
+
+            void Move(const models::Vector& direction, double multiplier)
+            {
+                _eye.x += direction.x * multiplier;
+                _eye.y += direction.y * multiplier;
+                _eye.z += direction.z * multiplier;
+
+                _lookAt.x += direction.x * multiplier;
+                _lookAt.y += direction.y * multiplier;
+                _lookAt.z += direction.z * multiplier;
             }
 
             [[nodiscard]] models::Vector Direction() const
