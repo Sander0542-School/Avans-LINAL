@@ -14,8 +14,8 @@ namespace linal
     class Game
     {
         private:
-            const double WINDOW_WIDTH = 1200;
-            const double WINDOW_HEIGHT = 600;
+            const double WINDOW_WIDTH = 900;
+            const double WINDOW_HEIGHT = 900;
 
             bool _quit = false;
 
