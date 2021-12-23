@@ -46,17 +46,18 @@ namespace linal::entities::common
             void Draw(engine::Window& window, std::shared_ptr<entities::Camera> camera, const engine::Color& color) override
             {
                 auto windowCenter = window.Size() * 0.5;
+                auto cameraMatrix = camera->CameraView();
 
                 std::vector<models::Point> points;
 
                 for (const auto& point: _points)
                 {
-                    auto cameraPoint = camera->CameraView() * point;
+                    auto cameraPoint = cameraMatrix * point;
 
                     auto x = windowCenter.x + (cameraPoint.x / cameraPoint.w) * windowCenter.x;
                     auto y = windowCenter.y + (cameraPoint.y / cameraPoint.w) * windowCenter.y;
 
-                    points.emplace_back(x, y, -cameraPoint.z);
+                    points.emplace_back(x, y, -cameraPoint.z, cameraPoint.z);
                 }
 
                 window.SetDrawColor(color);
