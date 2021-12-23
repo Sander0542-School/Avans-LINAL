@@ -151,34 +151,29 @@ namespace linal::models
                 return matrix;
             }
 
-            static Matrix Camera(const models::Vector& origin, const models::Vector& side, const models::Vector& top, const models::Vector& heading, size_t size = 4)
+            static Matrix Camera(const models::Vector& eye, const models::Vector& right, const models::Vector& up, const models::Vector& direction, size_t size = 4)
             {
-                auto direction = heading.Unit();
-                auto up = top.Unit();
-                auto right = side.Unit();
+                Matrix rotationMatrix = Unit(size);
+                rotationMatrix._matrix[0][0] = right.x;
+                rotationMatrix._matrix[0][1] = right.y;
+                rotationMatrix._matrix[0][2] = right.z;
 
-                Matrix matrix = Unit(size);
-                matrix._matrix[0][0] = right.x;
-                matrix._matrix[0][1] = right.y;
-                matrix._matrix[0][2] = right.z;
-                matrix._matrix[0][3] = -right.DotProduct(origin);
+                rotationMatrix._matrix[1][0] = up.x;
+                rotationMatrix._matrix[1][1] = up.y;
+                rotationMatrix._matrix[1][2] = up.z;
 
-                matrix._matrix[1][0] = up.x;
-                matrix._matrix[1][1] = up.y;
-                matrix._matrix[1][2] = up.z;
-                matrix._matrix[1][3] = -up.DotProduct(origin);
+                rotationMatrix._matrix[2][0] = direction.x;
+                rotationMatrix._matrix[2][1] = direction.y;
+                rotationMatrix._matrix[2][2] = direction.z;
 
-                matrix._matrix[2][0] = direction.x;
-                matrix._matrix[2][1] = direction.y;
-                matrix._matrix[2][2] = direction.z;
-                matrix._matrix[2][3] = -direction.DotProduct(origin);
+                Matrix translationMatrix = Translation(-eye.x, -eye.y, -eye.z, size);
 
-                return matrix;
+                return rotationMatrix * translationMatrix;
             }
 
             static Matrix Projection(double near, double far, double fov, size_t size = 4)
             {
-                double scale = near * tan((acos(-1) / 180) * fov * 0.5);
+                double scale = near * tan(fov * 0.5);
                 Matrix matrix{size, size};
                 matrix._matrix[0][0] = scale;
                 matrix._matrix[1][1] = scale;
