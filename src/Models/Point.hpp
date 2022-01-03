@@ -53,6 +53,16 @@ namespace linal::models
                 auto format = "%d";
                 return "(" + boost::str(boost::format(format) % x) + "," + boost::str(boost::format(format) % y) + "," + boost::str(boost::format(format) % z) + ")";
             }
+
+            bool operator==(const Point& rhs) const
+            {
+                return x == rhs.x && y == rhs.y && z == rhs.z && w == rhs.w;
+            }
+
+            bool operator!=(const Point& rhs) const
+            {
+                return !(rhs == *this);
+            }
     };
 }
 
