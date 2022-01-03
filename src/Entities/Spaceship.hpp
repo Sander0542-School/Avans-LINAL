@@ -145,6 +145,16 @@ namespace linal::entities
                     auto center = this->Center();
                     this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _pitchRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
                 }
+
+                // MOMEMENT
+                if (engine::Input::GetKey(engine::Input::KeyCode::LEFT_SHIFT) || engine::Input::GetKey(engine::Input::KeyCode::RIGHT_SHIFT))
+                {
+                    const auto& fromPoint = _points[19];
+                    const auto& toPoint = _points[0];
+                    models::Vector direction = models::Vector{fromPoint, toPoint}.Unit() * 0.1;
+
+                    this->Transform(models::Matrix::Translation(direction.x, direction.y, direction.z));
+                }
             }
     };
 }
