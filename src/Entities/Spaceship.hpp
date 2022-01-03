@@ -102,7 +102,6 @@ namespace linal::entities
                     // VERTICAL WING
                     _lines.emplace_back(21, 22);
                     _lines.emplace_back(22, 23);
-                    _lines.emplace_back(0, 19);
                 }
 
                 // CENTER
