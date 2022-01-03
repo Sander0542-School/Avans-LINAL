@@ -10,7 +10,7 @@ void Game::Start()
     auto camera = std::make_shared<entities::Camera>(models::Vector{0, 0, -50}, models::Vector{0,0,0});
     updatables.push_back(camera);
 
-    auto entity = std::make_shared<entities::CelestialBody>();
+    auto entity = std::make_shared<entities::Spaceship>();
     drawables.push_back(entity);
     updatables.push_back(entity);
 

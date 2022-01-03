@@ -99,6 +99,75 @@ namespace linal::entities
                 // CENTER
                 _center = {0, 0, 1};
             }
+
+            void OnUpdate() override
+            {
+                // ROTATION: ROLL
+                if (engine::Input::GetKey(engine::Input::KeyCode::Q))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _rollLeftMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
+                if (engine::Input::GetKey(engine::Input::KeyCode::E))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _rollRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
+
+                // ROTATION: YAW
+                if (engine::Input::GetKey(engine::Input::KeyCode::A))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _yawLeftMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
+                if (engine::Input::GetKey(engine::Input::KeyCode::D))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _yawRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
+
+                // ROTATION: PITCH
+                if (engine::Input::GetKey(engine::Input::KeyCode::W))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _pitchLeftMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
+                if (engine::Input::GetKey(engine::Input::KeyCode::S))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _pitchRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
+
+                // SCALING
+                if (engine::Input::GetKey(engine::Input::KeyCode::R))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _scaleUpMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
+                if (engine::Input::GetKey(engine::Input::KeyCode::F))
+                {
+                    auto center = this->Center();
+                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _scaleDownMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                }
+
+                // MOMEMENT
+                if (engine::Input::GetKey(engine::Input::KeyCode::I))
+                {
+                    this->Transform(topMatrix);
+                }
+                if (engine::Input::GetKey(engine::Input::KeyCode::J))
+                {
+                    this->Transform(leftMatrix);
+                }
+                if (engine::Input::GetKey(engine::Input::KeyCode::K))
+                {
+                    this->Transform(bottomMatrix);
+                }
+                if (engine::Input::GetKey(engine::Input::KeyCode::L))
+                {
+                    this->Transform(rightMatrix);
+                }
+            }
     };
 }
 
