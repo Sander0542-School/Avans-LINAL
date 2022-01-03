@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include "Models/Matrix.hpp"
-#include "Engine/Debug.hpp"
 
 using namespace linal::models;
 
@@ -205,10 +204,10 @@ TEST(MatrixTests, TestMatrixOperatorMultiplicationNumber)
 
 TEST(MatrixTests, TestMatrixScalingTranslation)
 {
-    Matrix matrixA = Matrix::Scaling(2,3,1);
-    Matrix matrixB = Matrix::Translation(2,2,1);
+    Matrix matrixA = Matrix::Scaling(2, 3, 1);
+    Matrix matrixB = Matrix::Translation(2, 2, 1);
 
-    Matrix matrixC{4,4};
+    Matrix matrixC{4, 4};
     matrixC[1][1] = 2;
     matrixC[1][2] = 0;
     matrixC[1][3] = 0;
