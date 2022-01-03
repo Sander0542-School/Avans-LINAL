@@ -36,10 +36,3 @@ jobs:
           configurePreset: ninja-multi-vcpkg
           buildPreset: ninja-multi-vcpkg
           testPreset: ninja-multi-vcpkg
-
-      - name: 'Upload Logs'
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: Test Logs
-          path: builds/ninja-multi-vcpkg/Testing
