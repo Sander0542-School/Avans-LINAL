@@ -67,11 +67,19 @@ namespace linal::entities
                     _lines.emplace_back(5, 9);
                     _lines.emplace_back(6, 9);
                     _lines.emplace_back(9, 10);
+                    _lines.emplace_back(5, 13);
+                    _lines.emplace_back(6, 14);
+                    _lines.emplace_back(5, 6);
+                    _lines.emplace_back(13, 14);
 
                     // RIGHT WINGS
                     _lines.emplace_back(7, 11);
                     _lines.emplace_back(8, 11);
                     _lines.emplace_back(11, 12);
+                    _lines.emplace_back(7, 15);
+                    _lines.emplace_back(8, 16);
+                    _lines.emplace_back(7, 8);
+                    _lines.emplace_back(15, 16);
 
                     // WINGS ATTACHMENT
                     _lines.emplace_back(10, 13);
@@ -94,6 +102,7 @@ namespace linal::entities
                     // VERTICAL WING
                     _lines.emplace_back(21, 22);
                     _lines.emplace_back(22, 23);
+                    _lines.emplace_back(0, 19);
                 }
 
                 // CENTER
