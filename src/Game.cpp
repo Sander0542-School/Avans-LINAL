@@ -16,7 +16,7 @@ void Game::Start()
 
     auto target = std::make_shared<entities::CelestialBody>();
 
-    target->Transform(models::Matrix::Translation(0, 0, 18));
+    target->Transform(models::Matrix::Translation(-15, 37, 18));
     target->Transform(models::Matrix::Pitch(12.5));
     target->Transform(models::Matrix::Roll(7.5));
     target->Transform(models::Matrix::Yaw(4.5));
