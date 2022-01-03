@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "Config.hpp"
 
 using namespace linal;
 
@@ -27,6 +28,11 @@ void Game::Start()
     {
         if (!engine::InputManager::GetInstance().Update()) break;
         _window.Clear();
+
+        if (engine::Input::GetKeyDown(engine::Input::KeyCode::H))
+        {
+            Config::Instance().DebugMode = !Config::Instance().DebugMode;
+        }
 
         // transform models
 

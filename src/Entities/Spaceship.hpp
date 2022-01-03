@@ -67,11 +67,19 @@ namespace linal::entities
                     _lines.emplace_back(5, 9);
                     _lines.emplace_back(6, 9);
                     _lines.emplace_back(9, 10);
+                    _lines.emplace_back(5, 13);
+                    _lines.emplace_back(6, 14);
+                    _lines.emplace_back(5, 6);
+                    _lines.emplace_back(13, 14);
 
                     // RIGHT WINGS
                     _lines.emplace_back(7, 11);
                     _lines.emplace_back(8, 11);
                     _lines.emplace_back(11, 12);
+                    _lines.emplace_back(7, 15);
+                    _lines.emplace_back(8, 16);
+                    _lines.emplace_back(7, 8);
+                    _lines.emplace_back(15, 16);
 
                     // WINGS ATTACHMENT
                     _lines.emplace_back(10, 13);
@@ -138,34 +146,14 @@ namespace linal::entities
                     this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _pitchRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
                 }
 
-                // SCALING
-                if (engine::Input::GetKey(engine::Input::KeyCode::R))
-                {
-                    auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _scaleUpMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
-                }
-                if (engine::Input::GetKey(engine::Input::KeyCode::F))
-                {
-                    auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _scaleDownMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
-                }
-
                 // MOMEMENT
-                if (engine::Input::GetKey(engine::Input::KeyCode::I))
+                if (engine::Input::GetKey(engine::Input::KeyCode::LEFT_SHIFT) || engine::Input::GetKey(engine::Input::KeyCode::RIGHT_SHIFT))
                 {
-                    this->Transform(topMatrix);
-                }
-                if (engine::Input::GetKey(engine::Input::KeyCode::J))
-                {
-                    this->Transform(leftMatrix);
-                }
-                if (engine::Input::GetKey(engine::Input::KeyCode::K))
-                {
-                    this->Transform(bottomMatrix);
-                }
-                if (engine::Input::GetKey(engine::Input::KeyCode::L))
-                {
-                    this->Transform(rightMatrix);
+                    const auto& fromPoint = _points[19];
+                    const auto& toPoint = _points[0];
+                    models::Vector direction = models::Vector{fromPoint, toPoint}.Unit() * 0.1;
+
+                    this->Transform(models::Matrix::Translation(direction.x, direction.y, direction.z));
                 }
             }
     };

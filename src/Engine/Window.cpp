@@ -26,18 +26,27 @@ void Window::RenderLine(double x1, double y1, double x2, double y2)
     SDL_RenderDrawLineF(_renderer.get(), x1, y1, x2, y2);
 }
 
-void Window::RenderText(const std::string& text, const Point& point, const Color& color, const Point& offset)
+void Window::RenderText(const std::string& text, const Point& point, const Color& color)
 {
-    auto newPoint = CalculatePoint(offset, point);
-    SDL_Color sdlColor{
-            (Uint8) (color.R() * 255), (Uint8) (color.G() * 255), (Uint8) (color.B() * 255), (Uint8) (color.A() * 255)
-    };
-    SDL_Surface* surface = TTF_RenderText_Blended(_font.get(), text.c_str(), sdlColor);
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(_renderer.get(), surface);
+    if (!_fontCache.contains(text))
+    {
+        SDL_Color sdlColor{
+                (Uint8) (color.R() * 255),
+                (Uint8) (color.G() * 255),
+                (Uint8) (color.B() * 255),
+                (Uint8) (color.A() * 255)
+        };
+        SDL_Surface* surface = TTF_RenderText_Blended(_font.get(), text.c_str(), sdlColor);
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(_renderer.get(), surface);
 
-    SDL_Rect rect{(int) newPoint.x, (int) newPoint.y, surface->w, surface->h};
+        _fontCache.emplace(text, std::make_shared<Texture>(surface, texture));
+    }
 
-    SDL_RenderCopy(_renderer.get(), texture, nullptr, &rect);
+    auto& texture = _fontCache[text];
+
+    SDL_Rect rect{(int) point.x, (int) point.y, texture->Width(), texture->Height()};
+
+    SDL_RenderCopy(_renderer.get(), texture->Get(), nullptr, &rect);
 }
 
 Point Window::CalculatePoint(const Point& offset, Point point, bool invertY)
