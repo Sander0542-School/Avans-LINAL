@@ -15,6 +15,15 @@ void Game::Start()
     drawables.push_back(entity);
     updatables.push_back(entity);
 
+    auto target = std::make_shared<entities::CelestialBody>();
+
+    target->Transform(models::Matrix::Translation(-15, 37, 18));
+    target->Transform(models::Matrix::Pitch(12.5));
+    target->Transform(models::Matrix::Roll(7.5));
+    target->Transform(models::Matrix::Yaw(4.5));
+    drawables.push_back(target);
+    updatables.push_back(target);
+
     while (!_quit)
     {
         if (!engine::InputManager::GetInstance().Update()) break;
