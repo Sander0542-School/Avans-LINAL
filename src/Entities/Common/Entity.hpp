@@ -6,6 +6,7 @@
 #include "ITransformable.hpp"
 
 #include "Models/Models.hpp"
+#include "Config.hpp"
 
 #include <map>
 #include <vector>
@@ -69,6 +70,14 @@ namespace linal::entities::common
                     if (beginPoint.w >= 0 && endPoint.w >= 0)
                     {
                         window.RenderLine(beginPoint.x, beginPoint.y, endPoint.x, endPoint.y);
+                    }
+
+                    if (Config::Instance().DebugMode)
+                    {
+                        for (size_t i = 0; i < points.size(); i++)
+                        {
+                            window.RenderText(std::to_string(i), points[i], engine::Color::red());
+                        }
                     }
                 }
             }
