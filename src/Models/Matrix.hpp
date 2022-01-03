@@ -334,6 +334,8 @@ namespace linal::models
                         if (_matrix[i][j] != rhs._matrix[i][j]) return false;
                     }
                 }
+
+                return true;
             }
 
             bool operator!=(const Matrix& rhs) const
