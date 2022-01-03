@@ -5,8 +5,10 @@
 #include <SDL_ttf.h>
 
 #include "Color.hpp"
+#include "Texture.hpp"
 #include "Models/Models.hpp"
 
+#include <map>
 #include <memory>
 #include <string>
 
@@ -18,6 +20,7 @@ namespace linal::engine
             std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> _window;
             std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> _renderer;
             std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> _font;
+            std::map<std::string, std::shared_ptr<Texture>> _fontCache;
 
             models::Point _size;
             models::Point _center;
@@ -27,7 +30,7 @@ namespace linal::engine
 
             void RenderLine(double x1, double y1, double x2, double y2);
 
-            void RenderText(const std::string& text, const models::Point& point, const Color& color, const models::Point& offset = {});
+            void RenderText(const std::string& text, const models::Point& point, const Color& color);
 
             models::Point CalculatePoint(const models::Point& offset, models::Point point, bool invertY = true);
 
