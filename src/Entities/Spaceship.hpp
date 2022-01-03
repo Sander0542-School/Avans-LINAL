@@ -146,24 +146,6 @@ namespace linal::entities
                     auto center = this->Center();
                     this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _pitchRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
                 }
-
-                // MOMEMENT
-                if (engine::Input::GetKey(engine::Input::KeyCode::I))
-                {
-                    this->Transform(topMatrix);
-                }
-                if (engine::Input::GetKey(engine::Input::KeyCode::J))
-                {
-                    this->Transform(leftMatrix);
-                }
-                if (engine::Input::GetKey(engine::Input::KeyCode::K))
-                {
-                    this->Transform(bottomMatrix);
-                }
-                if (engine::Input::GetKey(engine::Input::KeyCode::L))
-                {
-                    this->Transform(rightMatrix);
-                }
             }
     };
 }
