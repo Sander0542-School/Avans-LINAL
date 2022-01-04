@@ -321,6 +321,27 @@ namespace linal::models
             {
                 return rhs * lhs;
             }
+
+            bool operator==(const Matrix& rhs) const
+            {
+                if (_matrix.size() != rhs._matrix.size()) return false;
+                if (_matrix[0].size() != rhs._matrix[0].size()) return false;
+
+                for (int i = 0; i < _matrix.size(); ++i)
+                {
+                    for (int j = 0; j < _matrix[i].size(); ++j)
+                    {
+                        if (_matrix[i][j] != rhs._matrix[i][j]) return false;
+                    }
+                }
+
+                return true;
+            }
+
+            bool operator!=(const Matrix& rhs) const
+            {
+                return !(rhs == *this);
+            }
     };
 }
 
