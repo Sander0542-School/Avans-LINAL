@@ -151,6 +151,11 @@ namespace linal::models
                 return matrix;
             }
 
+            static Matrix M1()
+            {
+
+            }
+
             static Matrix Camera(const models::Vector& eye, const models::Vector& right, const models::Vector& up, const models::Vector& direction, size_t size = 4)
             {
                 Matrix rotationMatrix = Unit(size);

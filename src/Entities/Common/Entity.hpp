@@ -31,9 +31,9 @@ namespace linal::entities::common
             models::Matrix leftMatrix = models::Matrix::Translation(-1, 0, 0);
 
             models::Point _center{0, 0, 0};
-            models::Point _rollPoint{0, 0, 0};
-            models::Point _pitchPoint{0, 0, 0};
-            models::Point _yawPoint{0, 0, 0};
+            models::Point _rollPoint{0, 0, 1};
+            models::Point _pitchPoint{1, 0, 0};
+            models::Point _yawPoint{0, 1, 0};
             std::vector<models::Point> _points{};
             std::vector<std::pair<size_t, size_t>> _lines{};
 
