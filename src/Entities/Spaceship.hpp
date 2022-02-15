@@ -106,6 +106,9 @@ namespace linal::entities
 
                 // CENTER
                 _center = {0, 0, 1};
+                _rollPoint = {0, 0, 2};
+                _pitchPoint = {1, 0, 1};
+                _yawPoint = {0, 1, 1};
             }
 
             void OnUpdate() override
