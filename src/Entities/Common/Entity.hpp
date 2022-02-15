@@ -30,11 +30,11 @@ namespace linal::entities::common
             models::Matrix bottomMatrix = models::Matrix::Translation(0, -1, 0);
             models::Matrix leftMatrix = models::Matrix::Translation(-1, 0, 0);
 
+        public:
             models::Point _center{0, 0, 0};
             std::vector<models::Point> _points{};
             std::vector<std::pair<size_t, size_t>> _lines{};
 
-        public:
             void Transform(const models::Matrix& matrix) override
             {
                 _center = matrix * _center;

@@ -10,12 +10,15 @@ namespace linal::entities
         private:
             double initialLength;
             bool goingUp = true;
+            bool _isColliding;
 
             models::Matrix _scaleUpMatrix = models::Matrix::Scaling(1.03, 1.03, 1.03);
             models::Matrix _scaleDownMatrix = models::Matrix::Scaling(0.97, 0.97, 0.97);
 
+            std::vector<std::shared_ptr<entities::common::IDrawable>>& _drawables;
+
         public:
-            CelestialBody()
+            CelestialBody(std::vector<std::shared_ptr<entities::common::IDrawable>>& drawables) : _drawables(drawables)
             {
                 _points.emplace_back(-3, -3, -3);
                 _points.emplace_back(3, -3, -3);
@@ -50,19 +53,57 @@ namespace linal::entities
             {
                 double scale = 100.0 / initialLength * models::Vector{_points[0], _points[1]}.Length();
 
-                if (scale >= 125) {
+                if (scale >= 125)
+                {
                     goingUp = false;
                 }
-                else if (scale <= 75) {
+                else if (scale <= 75)
+                {
                     goingUp = true;
                 }
 
                 auto center = this->Center();
-                if (goingUp) {
+                if (goingUp)
+                {
                     this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _scaleUpMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
-                } else {
+                }
+                else
+                {
                     this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _scaleDownMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
                 }
+
+                double minX, minY, minZ, maxX, maxY, maxZ;
+                minX = minY = minZ = std::numeric_limits<double>::max();
+                maxX = maxY = maxZ = std::numeric_limits<double>::min();
+
+                for (const auto& point: _points)
+                {
+                    if (point.x < minX) minX = point.x;
+                    if (point.x < minY) minY = point.y;
+                    if (point.z < minZ) minZ = point.z;
+                    if (point.x > maxX) maxX = point.x;
+                    if (point.x > maxY) maxY = point.y;
+                    if (point.z > maxZ) maxZ = point.z;
+                }
+
+                _isColliding = false;
+                for (const auto& drawable: _drawables)
+                {
+                    auto entity = std::dynamic_pointer_cast<common::Entity>(drawable);
+                    for (const models::Point& point: entity->_points)
+                    {
+                        if (point.x > minX && point.x < maxX && point.y > minY && point.y < maxY && point.z > minZ && point.z < maxZ)
+                        {
+                            _isColliding = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            void Draw(engine::Window& window, std::shared_ptr<entities::Camera> camera, const engine::Color& color) override
+            {
+                Entity::Draw(window, camera, _isColliding ? engine::Color::red() : engine::Color::blue());
             }
     };
 }
