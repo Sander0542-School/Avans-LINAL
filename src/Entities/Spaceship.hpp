@@ -5,7 +5,8 @@
 
 namespace linal::entities
 {
-    const double SpeedDegrees = 0.03;
+//    const double SpeedDegrees = 0.03;
+    const double SpeedDegrees = 2.5;
 
     class Spaceship : public common::Entity
     {
@@ -142,8 +143,8 @@ namespace linal::entities
 
                 if (rotateRollLeft || rotateRollRight || rotateYawLeft || rotateYawRight || rotatePitchUp || rotatePitchDown)
                 {
-                    auto tBack = models::Matrix::Translation(_center.x, _center.y, _center.z);
-                    auto tOrigin = models::Matrix::Translation(-_center.x, -_center.y, -_center.z);
+                    const auto tBack = models::Matrix::Translation(_center.x, _center.y, _center.z);
+                    const auto tOrigin = models::Matrix::Translation(-_center.x, -_center.y, -_center.z);
 
                     if (rotateRollLeft || rotateRollRight)
                     {
