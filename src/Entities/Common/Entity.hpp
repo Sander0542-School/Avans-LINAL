@@ -16,12 +16,6 @@ namespace linal::entities::common
     class Entity : public IDrawable, public ITransformable, public IUpdatable
     {
         protected:
-            models::Matrix _rollLeftMatrix = models::Matrix::Roll(2.5);
-            models::Matrix _rollRightMatrix = models::Matrix::Roll(-2.5);
-            models::Matrix _yawLeftMatrix = models::Matrix::Yaw(2.5);
-            models::Matrix _yawRightMatrix = models::Matrix::Yaw(-2.5);
-            models::Matrix _pitchLeftMatrix = models::Matrix::Pitch(2.5);
-            models::Matrix _pitchRightMatrix = models::Matrix::Pitch(-2.5);
             models::Matrix _scaleUpMatrix = models::Matrix::Scaling(1.05, 1.05, 1.05);
             models::Matrix _scaleDownMatrix = models::Matrix::Scaling(0.95, 0.95, 0.95);
 
@@ -31,9 +25,9 @@ namespace linal::entities::common
             models::Matrix leftMatrix = models::Matrix::Translation(-1, 0, 0);
 
             models::Point _center{0, 0, 0};
-            models::Point _rollPoint{0, 0, 1};
-            models::Point _pitchPoint{1, 0, 0};
-            models::Point _yawPoint{0, 1, 0};
+            models::Point _rollPoint{0, 0, 5};
+            models::Point _pitchPoint{5, 0, 0};
+            models::Point _yawPoint{0, 5, 0};
             std::vector<models::Point> _points{};
             std::vector<std::pair<size_t, size_t>> _lines{};
 
@@ -41,6 +35,9 @@ namespace linal::entities::common
             void Transform(const models::Matrix& matrix) override
             {
                 _center = matrix * _center;
+                _rollPoint = matrix * _rollPoint;
+                _pitchPoint = matrix * _pitchPoint;
+                _yawPoint = matrix * _yawPoint;
                 for (auto& point: _points)
                 {
                     point = matrix * point;
@@ -82,6 +79,43 @@ namespace linal::entities::common
                             window.RenderText(std::to_string(i), points[i], engine::Color::red());
                         }
                     }
+                }
+
+                models::Point cameraCenterPoint;
+                {
+                    auto centerCameraPoint = cameraMatrix * _center;
+
+                    auto x = windowCenter.x + (centerCameraPoint.x / centerCameraPoint.w) * windowCenter.x;
+                    auto y = windowCenter.y + (centerCameraPoint.y / centerCameraPoint.w) * windowCenter.y;
+
+                    cameraCenterPoint = models::Point{x, y, -centerCameraPoint.z, centerCameraPoint.z};
+                }
+                {
+                    auto rollCameraPoint = cameraMatrix * _rollPoint;
+
+                    auto x = windowCenter.x + (rollCameraPoint.x / rollCameraPoint.w) * windowCenter.x;
+                    auto y = windowCenter.y + (rollCameraPoint.y / rollCameraPoint.w) * windowCenter.y;
+
+                    window.SetDrawColor(engine::Color::red());
+                    window.RenderLine(cameraCenterPoint.x, cameraCenterPoint.y, x, y);
+                }
+                {
+                    auto yawCameraPoint = cameraMatrix * _yawPoint;
+
+                    auto x = windowCenter.x + (yawCameraPoint.x / yawCameraPoint.w) * windowCenter.x;
+                    auto y = windowCenter.y + (yawCameraPoint.y / yawCameraPoint.w) * windowCenter.y;
+
+                    window.SetDrawColor(engine::Color::blue());
+                    window.RenderLine(cameraCenterPoint.x, cameraCenterPoint.y, x, y);
+                }
+                {
+                    auto pitchCameraPoint = cameraMatrix * _pitchPoint;
+
+                    auto x = windowCenter.x + (pitchCameraPoint.x / pitchCameraPoint.w) * windowCenter.x;
+                    auto y = windowCenter.y + (pitchCameraPoint.y / pitchCameraPoint.w) * windowCenter.y;
+
+                    window.SetDrawColor(engine::Color::green());
+                    window.RenderLine(cameraCenterPoint.x, cameraCenterPoint.y, x, y);
                 }
             }
 

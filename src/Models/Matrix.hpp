@@ -151,9 +151,51 @@ namespace linal::models
                 return matrix;
             }
 
-            static Matrix M1()
+            static Matrix M1(const models::Point& point, size_t size = 4)
             {
+                auto sqrtXY = sqrt(point.x * point.x + point.z * point.z);
+                auto sqrtX = point.x / sqrtXY;
+                auto sqrtZ = point.z / sqrtXY;
 
+                Matrix matrix = Unit(size);
+                matrix._matrix[0][0] = sqrtX;
+                matrix._matrix[0][2] = sqrtZ;
+                matrix._matrix[2][0] = -matrix._matrix[0][2];
+                matrix._matrix[2][2] = matrix._matrix[0][0];
+
+                return matrix;
+            }
+
+            static Matrix M2(const models::Point& point, size_t size = 4)
+            {
+                auto sqrtXZ = sqrt(point.x * point.x + point.z * point.z);
+                auto sqrtXYZ = sqrt(point.x * point.x + point.y * point.y + point.z * point.z);
+
+                Matrix matrix = Unit(size);
+                matrix._matrix[0][0] = sqrtXZ / sqrtXYZ;
+                matrix._matrix[0][1] = point.y / sqrtXYZ;
+                matrix._matrix[1][0] = -matrix._matrix[0][1];
+                matrix._matrix[1][1] = matrix._matrix[0][0];
+
+                return matrix;
+            }
+
+            static Matrix M4(models::Matrix m2)
+            {
+                auto tmp = m2._matrix[0][1];
+                m2._matrix[0][1] = m2._matrix[1][0];
+                m2._matrix[1][0] = tmp;
+
+                return m2;
+            }
+
+            static Matrix M5(models::Matrix m1)
+            {
+                auto tmp = m1._matrix[0][2];
+                m1._matrix[0][2] = m1._matrix[2][0];
+                m1._matrix[2][0] = tmp;
+
+                return m1;
             }
 
             static Matrix Camera(const models::Vector& eye, const models::Vector& right, const models::Vector& up, const models::Vector& direction, size_t size = 4)

@@ -5,8 +5,20 @@
 
 namespace linal::entities
 {
+    const double SpeedDegrees = 0.03;
+
     class Spaceship : public common::Entity
     {
+        private:
+            models::Matrix _rollLeftMatrix = models::Matrix::Roll(SpeedDegrees);
+            models::Matrix _rollRightMatrix = models::Matrix::Roll(-SpeedDegrees);
+
+            models::Matrix _yawLeftMatrix = models::Matrix::Yaw(SpeedDegrees);
+            models::Matrix _yawRightMatrix = models::Matrix::Yaw(-SpeedDegrees);
+
+            models::Matrix _pitchLeftMatrix = models::Matrix::Pitch(SpeedDegrees);
+            models::Matrix _pitchRightMatrix = models::Matrix::Pitch(-SpeedDegrees);
+
         public:
             Spaceship()
             {
@@ -105,53 +117,78 @@ namespace linal::entities
                 }
 
                 // CENTER
-                _center = {0, 0, 1};
-                _rollPoint = {0, 0, 2};
-                _pitchPoint = {1, 0, 1};
-                _yawPoint = {0, 1, 1};
+//                _center = {0, 0, 1};
+//                _rollPoint = {0, 0, 2};
+//                _pitchPoint = {1, 0, 1};
+//                _yawPoint = {0, 1, 1};
             }
 
             void OnUpdate() override
             {
-                auto m1 = Matrix::M1()
+                bool rotateRollLeft, rotateRollRight, rotateYawLeft, rotateYawRight, rotatePitchUp, rotatePitchDown;
+                rotateRollLeft = rotateRollRight = rotateYawLeft = rotateYawRight = rotatePitchUp = rotatePitchDown = false;
 
                 // ROTATION: ROLL
-                if (engine::Input::GetKey(engine::Input::KeyCode::Q))
-                {
-                    auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _rollLeftMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
-                }
-                if (engine::Input::GetKey(engine::Input::KeyCode::E))
-                {
-                    auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _rollRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
-                }
+                if (engine::Input::GetKey(engine::Input::KeyCode::Q)) rotateRollLeft = true;
+                if (engine::Input::GetKey(engine::Input::KeyCode::E)) rotateRollRight = true;
 
                 // ROTATION: YAW
-                if (engine::Input::GetKey(engine::Input::KeyCode::A))
-                {
-                    auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _yawLeftMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
-                }
-                if (engine::Input::GetKey(engine::Input::KeyCode::D))
-                {
-                    auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _yawRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
-                }
+                if (engine::Input::GetKey(engine::Input::KeyCode::A)) rotateYawLeft = true;
+                if (engine::Input::GetKey(engine::Input::KeyCode::D)) rotateYawRight = true;
 
                 // ROTATION: PITCH
-                if (engine::Input::GetKey(engine::Input::KeyCode::W))
+                if (engine::Input::GetKey(engine::Input::KeyCode::W)) rotatePitchUp = true;
+                if (engine::Input::GetKey(engine::Input::KeyCode::S)) rotatePitchDown = true;
+
+                if (rotateRollLeft || rotateRollRight || rotateYawLeft || rotateYawRight || rotatePitchUp || rotatePitchDown)
                 {
-                    auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _pitchLeftMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
-                }
-                if (engine::Input::GetKey(engine::Input::KeyCode::S))
-                {
-                    auto center = this->Center();
-                    this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _pitchRightMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
+                    auto tBack = models::Matrix::Translation(_center.x, _center.y, _center.z);
+                    auto tOrigin = models::Matrix::Translation(-_center.x, -_center.y, -_center.z);
+
+                    if (rotateRollLeft || rotateRollRight)
+                    {
+                        auto m1 = models::Matrix::M1(_rollPoint);
+                        auto m2 = models::Matrix::M2(_rollPoint);
+                        auto m4 = models::Matrix::M4(m2);
+                        auto m5 = models::Matrix::M5(m1);
+
+                        if (rotateRollLeft)
+                            this->Transform(tBack * m5 * m4 * _rollLeftMatrix * m2 * m1 * tOrigin);
+
+                        if (rotateRollRight)
+                            this->Transform(tBack * m5 * m4 * _rollRightMatrix * m2 * m1 * tOrigin);
+                    }
+
+                    if (rotateYawLeft || rotateYawRight)
+                    {
+                        auto m1 = models::Matrix::M1(_yawPoint);
+                        auto m2 = models::Matrix::M2(_yawPoint);
+                        auto m4 = models::Matrix::M4(m2);
+                        auto m5 = models::Matrix::M5(m1);
+
+                        if (rotateYawLeft)
+                            this->Transform(tBack * m5 * m4 * _yawLeftMatrix * m2 * m1 * tOrigin);
+
+                        if (rotateYawRight)
+                            this->Transform(tBack * m5 * m4 * _yawRightMatrix * m2 * m1 * tOrigin);
+                    }
+
+                    if (rotatePitchUp || rotatePitchDown)
+                    {
+                        auto m1 = models::Matrix::M1(_pitchPoint);
+                        auto m2 = models::Matrix::M2(_pitchPoint);
+                        auto m4 = models::Matrix::M4(m2);
+                        auto m5 = models::Matrix::M5(m1);
+
+                        if (rotatePitchUp)
+                            this->Transform(tBack * m5 * m4 * _pitchLeftMatrix * m2 * m1 * tOrigin);
+
+                        if (rotatePitchDown)
+                            this->Transform(tBack * m5 * m4 * _pitchRightMatrix * m2 * m1 * tOrigin);
+                    }
                 }
 
-                // MOMEMENT
+                // MOVEMENT
                 if (engine::Input::GetKey(engine::Input::KeyCode::LEFT_SHIFT) || engine::Input::GetKey(engine::Input::KeyCode::RIGHT_SHIFT))
                 {
                     const auto& fromPoint = _points[19];
