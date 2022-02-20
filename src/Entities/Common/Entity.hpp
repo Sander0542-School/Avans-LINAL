@@ -87,6 +87,23 @@ namespace linal::entities::common
                 return _center;
             }
 
+            [[nodiscard]] models::Box BoundingBox() const
+            {
+                models::Box box{std::numeric_limits<double>::min(), std::numeric_limits<double>::max()};
+
+                for (const auto& point: _points)
+                {
+                    if (point.x < box.minX) box.minX = point.x;
+                    if (point.y < box.minY) box.minY = point.y;
+                    if (point.z < box.minZ) box.minZ = point.z;
+                    if (point.x > box.maxX) box.maxX = point.x;
+                    if (point.y > box.maxY) box.maxY = point.y;
+                    if (point.z > box.maxZ) box.maxZ = point.z;
+                }
+
+                return box;
+            }
+
     };
 }
 
