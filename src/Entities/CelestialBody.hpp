@@ -2,6 +2,7 @@
 #define LINAL_ASSESSMENT_CELESTIALBODY_HPP
 
 #include "Common/Entity.hpp"
+#include "Engine/Debug.hpp"
 
 namespace linal::entities
 {
@@ -77,10 +78,15 @@ namespace linal::entities
                 _isColliding = false;
                 for (const auto& drawable: _drawables)
                 {
+                    if (this == drawable.get())
+                        continue;
+
                     auto entity = std::dynamic_pointer_cast<common::Entity>(drawable);
-                    for (const models::Point& point: entity->_points)
+                    if (entity)
                     {
-                        if (point.x > minX && point.x < maxX && point.y > minY && point.y < maxY && point.z > minZ && point.z < maxZ)
+                        auto boxB = entity->BoundingBox();
+                        engine::Debug::LogWarning(boxA.ToString() + " " + boxB.ToString());
+                        if (boxA.Overlaps(boxB))
                         {
                             _isColliding = true;
                             break;
