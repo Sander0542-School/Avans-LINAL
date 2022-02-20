@@ -72,19 +72,7 @@ namespace linal::entities
                     this->Transform(models::Matrix::Translation(center.x, center.y, center.z) * _scaleDownMatrix * models::Matrix::Translation(-center.x, -center.y, -center.z));
                 }
 
-                double minX, minY, minZ, maxX, maxY, maxZ;
-                minX = minY = minZ = std::numeric_limits<double>::max();
-                maxX = maxY = maxZ = std::numeric_limits<double>::min();
-
-                for (const auto& point: _points)
-                {
-                    if (point.x < minX) minX = point.x;
-                    if (point.x < minY) minY = point.y;
-                    if (point.z < minZ) minZ = point.z;
-                    if (point.x > maxX) maxX = point.x;
-                    if (point.x > maxY) maxY = point.y;
-                    if (point.z > maxZ) maxZ = point.z;
-                }
+                auto boxA = BoundingBox();
 
                 _isColliding = false;
                 for (const auto& drawable: _drawables)
