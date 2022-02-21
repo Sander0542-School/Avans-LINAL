@@ -30,11 +30,11 @@ namespace linal::entities::common
             models::Matrix bottomMatrix = models::Matrix::Translation(0, -1, 0);
             models::Matrix leftMatrix = models::Matrix::Translation(-1, 0, 0);
 
+        public:
             models::Point _center{0, 0, 0};
             std::vector<models::Point> _points{};
             std::vector<std::pair<size_t, size_t>> _lines{};
 
-        public:
             void Transform(const models::Matrix& matrix) override
             {
                 _center = matrix * _center;
@@ -85,6 +85,23 @@ namespace linal::entities::common
             [[nodiscard]] models::Point Center() const
             {
                 return _center;
+            }
+
+            [[nodiscard]] models::Box BoundingBox() const
+            {
+                models::Box box{std::numeric_limits<double>::min(), std::numeric_limits<double>::max()};
+
+                for (const auto& point: _points)
+                {
+                    if (point.x < box.minX) box.minX = point.x;
+                    if (point.y < box.minY) box.minY = point.y;
+                    if (point.z < box.minZ) box.minZ = point.z;
+                    if (point.x > box.maxX) box.maxX = point.x;
+                    if (point.y > box.maxY) box.maxY = point.y;
+                    if (point.z > box.maxZ) box.maxZ = point.z;
+                }
+
+                return box;
             }
 
     };

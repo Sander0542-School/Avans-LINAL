@@ -2,13 +2,19 @@
 #define LINAL_ASSESSMENT_SPACESHIP_H
 
 #include "Common/Entity.hpp"
+#include "Bullet.hpp"
 
 namespace linal::entities
 {
     class Spaceship : public common::Entity
     {
+        private:
+            std::vector<std::shared_ptr<entities::common::IDrawable>>& _drawables;
+            std::vector<std::shared_ptr<entities::common::IUpdatable>>& _updatables;
+
         public:
-            Spaceship()
+            Spaceship(std::vector<std::shared_ptr<entities::common::IDrawable>>& drawables, std::vector<std::shared_ptr<entities::common::IUpdatable>>& updatables) : _drawables(drawables),
+                                                                                                                                                                      _updatables(updatables)
             {
                 // POINTS
                 {
@@ -154,6 +160,14 @@ namespace linal::entities
                     models::Vector direction = models::Vector{fromPoint, toPoint}.Unit() * 0.1;
 
                     this->Transform(models::Matrix::Translation(direction.x, direction.y, direction.z));
+                }
+
+                // BULLET
+                if (engine::Input::GetKeyDown(engine::Input::KeyCode::SPACE))
+                {
+                    auto bullet = std::make_shared<Bullet>(_points[19], _points[0]);
+                    _drawables.push_back(bullet);
+                    _updatables.push_back(bullet);
                 }
             }
     };

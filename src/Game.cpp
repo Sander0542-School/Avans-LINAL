@@ -8,14 +8,14 @@ void Game::Start()
     std::vector<std::shared_ptr<entities::common::IDrawable>> drawables;
     std::vector<std::shared_ptr<entities::common::IUpdatable>> updatables;
 
-    auto camera = std::make_shared<entities::Camera>(models::Vector{0, 0, -50}, models::Vector{0,0,0});
+    auto camera = std::make_shared<entities::Camera>(models::Vector{0, 0, -50}, models::Vector{0, 0, 0});
     updatables.push_back(camera);
 
-    auto entity = std::make_shared<entities::Spaceship>();
+    auto entity = std::make_shared<entities::Spaceship>(drawables, updatables);
     drawables.push_back(entity);
     updatables.push_back(entity);
 
-    auto target = std::make_shared<entities::CelestialBody>();
+    auto target = std::make_shared<entities::CelestialBody>(drawables);
 
     target->Transform(models::Matrix::Translation(-15, 37, 18));
     target->Transform(models::Matrix::Pitch(12.5));
@@ -36,12 +36,14 @@ void Game::Start()
 
         // transform models
 
-        for (const auto& updatable: updatables)
+        auto tmp = updatables;
+        for (auto updatable: tmp)
         {
             updatable->OnUpdate();
         }
 
-        for (const auto& drawable: drawables)
+        auto tmp2 = drawables;
+        for (auto drawable: tmp2)
         {
             drawable->Draw(_window, camera);
         }
