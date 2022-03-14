@@ -2,7 +2,6 @@
 #define LINAL_ASSESSMENT_CELESTIALBODY_HPP
 
 #include "Common/Entity.hpp"
-#include "Engine/Debug.hpp"
 
 namespace linal::entities
 {
@@ -85,7 +84,6 @@ namespace linal::entities
                     if (entity)
                     {
                         auto boxB = entity->BoundingBox();
-                        engine::Debug::LogWarning(boxA.ToString() + " " + boxB.ToString());
                         if (boxA.Overlaps(boxB))
                         {
                             _isColliding = true;
