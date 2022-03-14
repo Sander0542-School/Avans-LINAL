@@ -115,10 +115,6 @@ namespace linal::entities
                 _center = {0, 0, 1};
             }
 
-            void RotateWing() {
-
-            }
-
             void OnUpdate() override
             {
                 // ROTATION: ROLL
