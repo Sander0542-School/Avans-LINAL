@@ -53,6 +53,7 @@ namespace linal::entities
                     _points.emplace_back(0, 1, 1); // 21 - front anchor
                     _points.emplace_back(0, 0, 2); // 22 - tip
                     _points.emplace_back(0, -1, 1); // 23 - back anchor
+                    _points.emplace_back(0, 0, 1.5); // 24 - back anchor
                 }
 
                 // LINES
@@ -114,6 +115,10 @@ namespace linal::entities
                 _center = {0, 0, 1};
             }
 
+            void RotateWing() {
+
+            }
+
             void OnUpdate() override
             {
                 // ROTATION: ROLL
@@ -168,6 +173,17 @@ namespace linal::entities
                     auto bullet = std::make_shared<Bullet>(_points[19], _points[0]);
                     _drawables.push_back(bullet);
                     _updatables.push_back(bullet);
+                }
+
+                // ROTATION: ROLL SECONDARY
+                if (engine::Input::GetKey(engine::Input::KeyCode::B))
+                {
+                    auto matrix = models::Matrix::Translation(_points[24].x, _points[24].y, _points[24].z) * _rollLeftMatrix * models::Matrix::Translation(-_points[24].x, -_points[24].y, -_points[24].z);
+
+                    _points[24] = matrix * _points[24];
+                    _points[21] = matrix * _points[21];
+                    _points[22] = matrix * _points[22];
+                    _points[23] = matrix * _points[23];
                 }
             }
     };
